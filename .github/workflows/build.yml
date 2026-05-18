@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Extract zip
         run: unzip dino_rush_admob.zip -d project
@@ -57,7 +57,7 @@ jobs:
           godot --headless --export-debug "Android" ../../dino_rush.apk || true
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Dino-Rush-APK
           path: "*.apk"

@@ -51,10 +51,14 @@ jobs:
             -keysize 2048 \
             -validity 10000
 
+      - name: Create Godot Editor Settings
+        run: |
+          printf '[gd_resource type="EditorSettings"]\n\n[resource]\nexport/android/debug_keystore="/home/runner/.config/godot/debug.keystore"\nexport/android/debug_keystore_user="androiddebugkey"\nexport/android/debug_keystore_pass="android"\n' > ~/.config/godot/editor_settings-4.tres
+
       - name: Create Export Preset
         run: |
           mkdir -p project/dino_admob
-          printf '[preset.0]\nname="Android"\nplatform="Android"\nrunnable=true\ndedicated_server=false\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"\n\n[preset.0.options]\ncustom_build/use_custom_build=false\npackage/unique_name="com.wwish.dinorush"\npackage/name="Dino Rush"\npackage/signed=true\nkeystore/debug="/home/runner/.config/godot/debug.keystore"\nkeystore/debug_user="androiddebugkey"\nkeystore/debug_password="android"\narchitectures/arm64-v8a=true\n' > project/dino_admob/export_presets.cfg
+          printf '[preset.0]\nname="Android"\nplatform="Android"\nrunnable=true\ndedicated_server=false\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"\n\n[preset.0.options]\ncustom_build/use_custom_build=false\npackage/unique_name="com.wwish.dinorush"\npackage/name="Dino Rush"\npackage/signed=false\narchitectures/arm64-v8a=true\n' > project/dino_admob/export_presets.cfg
 
       - name: Build APK
         run: |

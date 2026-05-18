@@ -38,6 +38,19 @@ jobs:
         run: |
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
+      - name: Generate Debug Keystore
+        run: |
+          mkdir -p ~/.config/godot
+          keytool -genkeypair -v \
+            -keystore ~/.config/godot/debug.keystore \
+            -alias androiddebugkey \
+            -keypass android \
+            -storepass android \
+            -dname "CN=Android Debug,O=Android,C=US" \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000
+
       - name: Create Export Preset
         run: |
           mkdir -p project/dino_admob
@@ -59,7 +72,10 @@ jobs:
           custom_build/use_custom_build=false
           package/unique_name="com.wwish.dinorush"
           package/name="Dino Rush"
-          package/signed=false
+          package/signed=true
+          keystore/debug="/home/runner/.config/godot/debug.keystore"
+          keystore/debug_user="androiddebugkey"
+          keystore/debug_password="android"
           architectures/arm64-v8a=true
           EOF
 

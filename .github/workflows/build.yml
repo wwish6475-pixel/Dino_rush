@@ -62,7 +62,14 @@ jobs:
 
       - name: Build APK
         run: |
-          godot --headless --path project/dino_admob --export-debug "Android" /home/runner/work/Dino_rush/Dino_rush/dino_rush.apk
+          godot --headless --path project/dino_admob --export-debug "Android" /home/runner/work/Dino_rush/Dino_rush/dino_rush.apk 2>&1 | tee build_log.txt || true
+          echo "=== CFG FILE ==="
+          cat project/dino_admob/export_presets.cfg
+          echo "=== EDITOR SETTINGS ==="
+          cat ~/.config/godot/editor_settings-4.tres
+          echo "=== KEYSTORE ==="
+          ls -la ~/.config/godot/
+          exit 1
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

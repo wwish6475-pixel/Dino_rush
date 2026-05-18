@@ -53,23 +53,16 @@ jobs:
 
       - name: Create Godot Editor Settings
         run: |
-          printf '[gd_resource type="EditorSettings"]\n\n[resource]\nexport/android/debug_keystore="/home/runner/.config/godot/debug.keystore"\nexport/android/debug_keystore_user="androiddebugkey"\nexport/android/debug_keystore_pass="android"\n' > ~/.config/godot/editor_settings-4.tres
+          printf '[gd_resource type="EditorSettings"]\n\n[resource]\nexport/android/debug_keystore="/home/runner/.config/godot/debug.keystore"\nexport/android/debug_keystore_user="androiddebugkey"\nexport/android/debug_keystore_pass="android"\nexport/android/android_sdk_path="/usr/local/lib/android/sdk"\n' > ~/.config/godot/editor_settings-4.tres
 
       - name: Create Export Preset
         run: |
           mkdir -p project/dino_admob
-          printf '[preset.0]\nname="Android"\nplatform="Android"\nrunnable=true\ndedicated_server=false\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"\n\n[preset.0.options]\ncustom_build/use_custom_build=false\npackage/unique_name="com.wwish.dinorush"\npackage/name="Dino Rush"\npackage/signed=false\narchitectures/arm64-v8a=true\n' > project/dino_admob/export_presets.cfg
+          printf '[preset.0]\nname="Android"\nplatform="Android"\nrunnable=true\ndedicated_server=false\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"\n\n[preset.0.options]\ncustom_build/use_custom_build=false\npackage/unique_name="com.wwish.dinorush"\npackage/name="Dino Rush"\npackage/signed=false\narchitectures/arm64-v8a=true\narchitectures/armeabi-v7a=false\narchitectures/x86=false\narchitectures/x86_64=false\ngradlew/use_android_x=true\n' > project/dino_admob/export_presets.cfg
 
       - name: Build APK
         run: |
-          godot --headless --path project/dino_admob --export-debug "Android" /home/runner/work/Dino_rush/Dino_rush/dino_rush.apk 2>&1 | tee build_log.txt || true
-          echo "=== CFG FILE ==="
-          cat project/dino_admob/export_presets.cfg
-          echo "=== EDITOR SETTINGS ==="
-          cat ~/.config/godot/editor_settings-4.tres
-          echo "=== KEYSTORE ==="
-          ls -la ~/.config/godot/
-          exit 1
+          godot --headless --path project/dino_admob --export-debug "Android" /home/runner/work/Dino_rush/Dino_rush/dino_rush.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

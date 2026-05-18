@@ -15,7 +15,7 @@ jobs:
         run: unzip dino_rush_admob.zip -d project
 
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -54,35 +54,11 @@ jobs:
       - name: Create Export Preset
         run: |
           mkdir -p project/dino_admob
-          cat > project/dino_admob/export_presets.cfg << 'EOF'
-          [preset.0]
-
-          name="Android"
-          platform="Android"
-          runnable=true
-          dedicated_server=false
-          custom_features=""
-          export_filter="all_resources"
-          include_filter=""
-          exclude_filter=""
-          export_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"
-
-          [preset.0.options]
-
-          custom_build/use_custom_build=false
-          package/unique_name="com.wwish.dinorush"
-          package/name="Dino Rush"
-          package/signed=true
-          keystore/debug="/home/runner/.config/godot/debug.keystore"
-          keystore/debug_user="androiddebugkey"
-          keystore/debug_password="android"
-          architectures/arm64-v8a=true
-          EOF
+          printf '[preset.0]\nname="Android"\nplatform="Android"\nrunnable=true\ndedicated_server=false\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"\n\n[preset.0.options]\ncustom_build/use_custom_build=false\npackage/unique_name="com.wwish.dinorush"\npackage/name="Dino Rush"\npackage/signed=true\nkeystore/debug="/home/runner/.config/godot/debug.keystore"\nkeystore/debug_user="androiddebugkey"\nkeystore/debug_password="android"\narchitectures/arm64-v8a=true\n' > project/dino_admob/export_presets.cfg
 
       - name: Build APK
         run: |
           godot --headless --path project/dino_admob --export-debug "Android" /home/runner/work/Dino_rush/Dino_rush/dino_rush.apk
-          ls -la /home/runner/work/Dino_rush/Dino_rush/
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

@@ -14,6 +14,36 @@ jobs:
       - name: Extract zip
         run: unzip dino_rush_admob.zip -d project
 
+      - name: Remove AdMob plugin
+        run: |
+          rm -rf project/dino_admob/addons
+          rm -rf project/dino_admob/android
+          rm -f project/dino_admob/scripts/AdMobManager.gd
+          cat > project/dino_admob/project.godot << 'EOF'
+          ; Engine configuration file.
+          config_version=5
+
+          [application]
+
+          config/name="Dino Rush"
+          config/description="Dino Rush - Environment Changing Game"
+          run/main_scene="res://scenes/Main.tscn"
+          config/features=PackedStringArray("4.2", "GL Compatibility")
+          config/icon="res://assets/dino.png"
+
+          [display]
+
+          window/size/viewport_width=900
+          window/size/viewport_height=400
+          window/stretch/mode="canvas_items"
+          window/stretch/aspect="expand"
+
+          [rendering]
+
+          renderer/rendering_method="gl_compatibility"
+          renderer/rendering_method.mobile="gl_compatibility"
+          EOF
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -57,8 +87,7 @@ jobs:
 
       - name: Create Export Preset
         run: |
-          mkdir -p project/dino_admob
-          printf '[preset.0]\nname="Android"\nplatform="Android"\nrunnable=true\ndedicated_server=false\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"\n\n[preset.0.options]\ncustom_build/use_custom_build=false\npackage/unique_name="com.wwish.dinorush"\npackage/name="Dino Rush"\npackage/signed=false\narchitectures/arm64-v8a=true\narchitectures/armeabi-v7a=false\narchitectures/x86=false\narchitectures/x86_64=false\ngradlew/use_android_x=true\n' > project/dino_admob/export_presets.cfg
+          printf '[preset.0]\nname="Android"\nplatform="Android"\nrunnable=true\ndedicated_server=false\ncustom_features=""\nexport_filter="all_resources"\ninclude_filter=""\nexclude_filter=""\nexport_path="/home/runner/work/Dino_rush/Dino_rush/dino_rush.apk"\n\n[preset.0.options]\ncustom_build/use_custom_build=false\npackage/unique_name="com.wwish.dinorush"\npackage/name="Dino Rush"\npackage/signed=false\narchitectures/arm64-v8a=true\n' > project/dino_admob/export_presets.cfg
 
       - name: Build APK
         run: |
